@@ -15,6 +15,7 @@ print("▶️ DATABASE_URL =", url)
 engine = create_engine(
     url,
     pool_pre_ping=True,
+    echo=True
 )
 
 # SessionLocal y Base

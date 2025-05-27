@@ -17,8 +17,8 @@ from app.models import (
 # Creamos las tablas
 Base.metadata.create_all(bind=engine)
 
-# Instanciamos FastAPI
-app = FastAPI(title="API Torneos")
+app = FastAPI(title="API Torneos", debug=True)
+
 
 # Endpoint mínimo para diagnóstico
 @app.get("/ping", tags=["Health"])
