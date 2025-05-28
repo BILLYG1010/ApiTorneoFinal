@@ -5,3 +5,4 @@ mysql-connector-python
 passlib[bcrypt]
 python-jose[cryptography]
 python-dotenv
+pymysql

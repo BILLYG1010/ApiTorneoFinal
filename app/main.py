@@ -1,11 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# Importamos get_db si lo usan los routers
 from app.database import Base, engine, get_db  
 from app.config import settings
-
-# Importamos TODOS los modelos para que create_all los registre
 from app.models import (
     user_model,
     rol_model,
@@ -14,27 +11,30 @@ from app.models import (
     reglamento_model,
 )
 
-# Creamos las tablas
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="API Torneos", debug=True)
 
+origins = [
+    "http://localhost:4200",                # Angular local dev
+    "http://localhost:3000",                # Otro puerto típico (React)
+    "http://127.0.0.1:4200",                # Variante local
+    "https://tornesomesoamericana.com",     # Tu dominio real
+    "https://www.tornesomesoamericana.com"  # Con www, si aplica
+]
 
-# Endpoint mínimo para diagnóstico
-@app.get("/ping", tags=["Health"])
-def ping():
-    return {"msg": "pong"}
-
-# Configuración CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Montamos las rutas (después del ping)
+@app.get("/ping", tags=["Health"])
+def ping():
+    return {"msg": "pong"}
+
 from app.routes import auth_routes, torneo_routes, estado_routes, reglamento_routes
 
 app.include_router(auth_routes.router)
